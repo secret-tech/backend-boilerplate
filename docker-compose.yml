@@ -1,0 +1,68 @@
+version: '2'
+services:
+  workspace:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - 80:3000
+      - 3000:3000
+      - 443:4000
+    volumes:
+      - ./:/usr/src/app
+    links:
+      - auth
+      - redis
+    depends_on:
+      - mongo
+    tty: true
+    networks:
+      default:
+        ipv4_address: 10.200.0.2
+
+  auth:
+    image: jincort/backend-auth:production
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      FORCE_HTTPS: disabled
+      JWT_KEY: "uZrJ!xe*xN?!;oU.u*;QOSM+|=4C?WH?6eWPcK/6AkIXIVGQguSA*r"
+      THROTTLER_WHITE_LIST: "127.0.0.1,10.200.0.2,10.200.0.6"
+      TENANT_WHITE_LIST: "127.0.0.1,10.200.0.2,10.200.0.6"
+    ports:
+      - "3000"
+      - "4000"
+    links:
+      - redis
+    networks:
+      default:
+        ipv4_address: 10.200.0.3
+
+  redis:
+    image: jincort/backend-redis:production
+    ports:
+      - "6379"
+    volumes:
+      - ./storage/redis:/data
+    networks:
+      default:
+        ipv4_address: 10.200.0.4
+
+  mongo:
+    image: jincort/backend-mongodb:production
+    volumes:
+        - ./storage/mongodb:/data/db
+    networks:
+      default:
+        ipv4_address: 10.200.0.7
+    ports:
+      - 27017:27017
+      - 28017:28017
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.200.0.0/16
+          gateway: 10.200.0.1
