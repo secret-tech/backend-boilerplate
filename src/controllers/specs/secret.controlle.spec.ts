@@ -1,5 +1,6 @@
 import * as chai from 'chai';
 import * as factory from './test.app.factory';
+import { cleanUpMetadata } from 'inversify-express-utils';
 require('../../../test/load.fixtures');
 
 chai.use(require('chai-http'));
@@ -18,6 +19,10 @@ const getRequest = (customApp, url: string) => {
 };
 
 describe('Secret', () => {
+  beforeEach(() => {
+    cleanUpMetadata();
+  });
+
   it('should get secret data', (done) => {
     const token = 'verified_token';
 

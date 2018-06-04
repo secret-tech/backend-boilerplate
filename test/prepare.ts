@@ -1,6 +1,6 @@
 const prepare = require('mocha-prepare');
 import 'reflect-metadata';
-import { createConnection } from 'typeorm';
+import { createConnection, ConnectionOptions } from 'typeorm';
 
 prepare(function(done) {
   createConnection({
@@ -21,7 +21,7 @@ prepare(function(done) {
     'subscribers': [
       'src/subscriber/**/*.ts'
     ]
-  }).then(async connection => {
+  } as ConnectionOptions).then(async connection => {
     done();
   });
 });

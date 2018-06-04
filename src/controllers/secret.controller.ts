@@ -1,12 +1,10 @@
 import config from '../config';
 import { Response, Request } from 'express';
-import { injectable } from 'inversify';
 import { controller, httpGet } from 'inversify-express-utils';
 import 'reflect-metadata';
 import { AuthorizedRequest } from '../requests/authorized.request';
 import { Logger } from '../logger';
 
-@injectable()
 @controller(
   '/secret',
   'OnlyAcceptApplicationJson'

@@ -6,8 +6,9 @@
     "target": "es6",
     "noImplicitAny": false,
     "sourceMap": false,
-    "lib": ["es2015", "dom"],
+    "lib": ["es6", "dom"],
     "outDir": "dist",
+    "moduleResolution": "node",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },

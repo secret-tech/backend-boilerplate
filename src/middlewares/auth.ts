@@ -28,8 +28,6 @@ export class Auth {
       token: token
     });
 
-    console.dir(tokenVerification);
-
     if (!tokenVerification || !tokenVerification.verified) {
       return Auth.notAuthorized(res);
     }
